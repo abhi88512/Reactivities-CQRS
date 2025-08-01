@@ -1,6 +1,7 @@
 import { Grid2 } from "@mui/material"
 import { ActivityList } from "./ActivityList"
 import { ActivityDetail } from "../detail/ActivityDetail"
+import { ActivityForm } from "../form/ActivityForm"
 
 
 type Props = {
@@ -8,16 +9,31 @@ type Props = {
     selectActivity: (id: string) => void;
     cancelActivity: () => void;
     selctedActivity: Activity | undefined
+    openForm: (id: string) => void
+    closeForm: () => void
+    editMode: boolean
+    submitForm: (activity: Activity) => void
+    deleteActivity: (id : string) => void
 }
-const ActivityDashboard = ({ activities, selectActivity, selctedActivity, cancelActivity }: Props) => {
+const ActivityDashboard = ({ activities, selectActivity, selctedActivity, 
+    cancelActivity , openForm, 
+    closeForm, editMode ,
+    submitForm, deleteActivity
+}: Props) => {
     return (
         <Grid2 container spacing={3}>
             <Grid2 size={7}>
-                <ActivityList activities={activities} selectActivity={selectActivity} />
+                <ActivityList activities={activities} selectActivity={selectActivity} deleteActivity= {deleteActivity} />
 
             </Grid2>
             <Grid2 size={5}>
-                {selctedActivity && <ActivityDetail activity={selctedActivity} cancelActivity={cancelActivity} />}
+                {selctedActivity && (!editMode) && 
+                <ActivityDetail 
+                activity={selctedActivity} 
+                cancelActivity={cancelActivity} 
+                openForm={openForm} 
+                />}
+                {editMode && <ActivityForm closeForm={closeForm} activity={selctedActivity} submitForm={submitForm}/>}
             </Grid2>
 
         </Grid2>
