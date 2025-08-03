@@ -1,34 +1,53 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material"
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
+import { Link, useNavigate, useParams } from "react-router";
 import useActivities from "../../../lib/hooks/useActivities";
 
-type Props ={
-    selectedActivity: Activity
-    cancelActivity: () => void;
-    openForm: (id: string) => void;
-}
+export const ActivityDetail = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  
 
-export const ActivityDetail = ({selectedActivity, cancelActivity, openForm }: Props) => {
-  const {activities} = useActivities();
-  const activity = activities?.find(x => x.id === selectedActivity.id);
-  if(!activity){
-    return <Typography>Loading...</Typography>
+  const { activity, isLoadingActivity } = useActivities(id);
+
+  if (isLoadingActivity) {
+    return <Typography>Loading...</Typography>;
+  }
+
+  if (!activity) {
+    return <Typography>Activity Not Found</Typography>;
   }
   return (
-    <Card sx={{borderRadius: 3}}>
-        <CardMedia
-        component='img'
+    <Card sx={{ borderRadius: 3 }}>
+      <CardMedia
+        component="img"
         src={`/images/categoryImages/${activity.category}.jpg`}
-        />
-        <CardContent>
-            <Typography variant='h5'>{activity.title}</Typography>
-            <Typography variant='subtitle1' fontWeight='light'>{activity.date}</Typography>
-            <Typography variant='body1'>{activity.description}</Typography>
-        </CardContent>
-        <CardActions>
-            <Button onClick={() => openForm(activity.id)} color='primary'>Edit</Button>
-            <Button onClick={cancelActivity} color='warning'>Cancel</Button>
-        </CardActions>
-
+      />
+      <CardContent>
+        <Typography variant="h5">{activity.title}</Typography>
+        <Typography variant="subtitle1" fontWeight="light">
+          {activity.date}
+        </Typography>
+        <Typography variant="body1">{activity.description}</Typography>
+      </CardContent>
+      <CardActions>
+        <Button
+          component={Link}
+          to={`/manage/${activity.id}`}
+          color="primary"
+        >
+          Edit
+        </Button>
+        <Button onClick={() => navigate("/activities")} color="warning">
+          Cancel
+        </Button>
+      </CardActions>
     </Card>
-  )
-}
+  );
+};
