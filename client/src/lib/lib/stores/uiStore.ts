@@ -12,6 +12,6 @@ export default class uiStore {
     }
 
     isIdle(){
-        this.isLoading = true;
+        this.isLoading = false;
     }
 }
