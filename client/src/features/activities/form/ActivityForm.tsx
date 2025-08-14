@@ -1,79 +1,51 @@
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
-import type { FormEvent } from "react";
+import { Box, Button, Paper, Typography } from "@mui/material";
+import { useEffect } from "react";
 import useActivities from "../../../lib/hooks/useActivities";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
+import { useForm, type FieldValues } from "react-hook-form";
+import {
+  activityScheema,
+  type ActivityScheema,
+} from "../../../lib/scheemas/activityScheema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import TextInput from "../../../app/shared/components/TextInput";
 
 export const ActivityForm = () => {
-  const {id} = useParams();
-  const navigate = useNavigate();
-  const { updateActivity, createActivity, activity, isLoadingActivity } = useActivities(id);
+  const {  handleSubmit, reset, control } = useForm<ActivityScheema>({
+    mode: "onTouched",
+    resolver: zodResolver(activityScheema),
+  });
+  const { id } = useParams();
+  const { updateActivity, createActivity, activity, isLoadingActivity } =
+    useActivities(id);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(event);
+  useEffect(() => {
+    if (activity) reset(activity);
+  }, [activity, reset]);
 
-    const formdata = new FormData(event.currentTarget);
-
-    const data: { [key: string]: FormDataEntryValue } = {};
-
-    formdata.forEach((value, key) => {
-      data[key] = value;
-    });
-
+  const onSubmit = (data: FieldValues) => {
     console.log(data);
-
-    if (activity) {
-      data.id = activity.id;
-      updateActivity.mutateAsync(data as unknown as Activity);
-      navigate(`/activities/${activity.id}`)
-    } else {
-      createActivity.mutate(data as unknown as Activity,{
-        onSuccess: (id) => {
-          navigate(`/activities/${id}`)
-        }
-      });
-    }
   };
 
-  if(isLoadingActivity) return <Typography>Loading Activity...</Typography>
+  if (isLoadingActivity) return <Typography>Loading Activity...</Typography>;
 
   return (
     <Paper sx={{ borderRadius: 3, padding: 3 }}>
       <Typography variant="h5" color="primary" gutterBottom>
-       { activity ? 'Edit Activity' : 'Create Activity'}
+        {activity ? "Edit Activity" : "Create Activity"}
       </Typography>
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         display="flex"
         flexDirection="column"
         gap={3}
       >
-        <TextField name="title" label="Title" defaultValue={activity?.title} />
-        <TextField
-          name="description"
-          label="Description"
-          multiline
-          rows={3}
-          defaultValue={activity?.description}
-        />
-        <TextField
-          label="Category"
-          name="category"
-          defaultValue={activity?.category}
-        />
-        <TextField
-          label="Date"
-          type="date"
-          name="date"
-          defaultValue={
-            activity?.date
-              ? new Date(activity.date).toISOString().split("T")[0]
-              : new Date().toISOString().split("T")[0]
-          }
-        />
-        <TextField label="City" name="city" defaultValue={activity?.city} />
-        <TextField label="Venue" name="venue" defaultValue={activity?.venue} />
+        <TextInput label="Title" control={control} name ="title" />
+        <TextInput label="Description" control={control} name ="description" multiline rows={4} />
+        <TextInput label="Category" control={control} name ="category" />
+        <TextInput label="City" control={control} name="city" />
+        <TextInput label="Venue" control={control} name ="venue" />
         <Box display="flex" justifyContent="end" gap={3}>
           <Button onClick={() => {}} color="inherit">
             Cancel
