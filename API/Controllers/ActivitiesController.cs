@@ -3,6 +3,7 @@ using Application.Activities.Commands;
 using Application.Activities.DTO;
 using Application.Activities.Quries;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -18,6 +19,8 @@ public class ActivitiesController() : BaseApiController
         
     }
 
+
+    [Authorize]
     [HttpGet("{id}")]
 
     public async Task<ActionResult<Activity>> GetActivityDetail(string id)
