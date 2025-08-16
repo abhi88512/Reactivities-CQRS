@@ -1,7 +1,6 @@
 import { CalendarToday, Info, Place } from "@mui/icons-material";
 import { Box, Button, Divider, Grid2, Paper, Typography } from "@mui/material";
 import { formatDate } from "../../../lib/util/util";
-import type { Activity } from "../../../lib/types";
 import MapComponet from "../../../app/shared/components/MapComponet";
 import { useState } from "react";
 

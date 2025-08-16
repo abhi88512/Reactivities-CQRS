@@ -6,7 +6,7 @@ import { useForm, type FieldValues } from "react-hook-form";
 import {
   activitySchema,
   type ActivitySchema,
-} from "../../../lib/scheemas/activityScheema";
+} from "../../../lib/scheemas/activitySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TextInput from "../../../app/shared/components/TextInput";
 import SelectInput from "../../../app/shared/components/SelectInput";
