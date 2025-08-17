@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Security;
+namespace API.DTO;
 
 public class ResisterDto
 {

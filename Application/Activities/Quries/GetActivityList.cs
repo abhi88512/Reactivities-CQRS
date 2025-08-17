@@ -1,4 +1,7 @@
 using System;
+using Application.Activities.DTO;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,13 +11,15 @@ namespace Application.Activities.Quries;
 
 public class GetActivityList
 {
-    public class Query : IRequest<List<Activity>> { }
+    public class Query : IRequest<List<GetActivityDetailsDto>> { }
 
-    public class Handler(AppDbContext context) : IRequestHandler<Query, List<Activity>>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, List<GetActivityDetailsDto>>
     {
-        public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<List<GetActivityDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            return await context.Activities.AsNoTracking().ToListAsync(cancellationToken);
+            return await context.Activities
+            .ProjectTo<GetActivityDetailsDto>(mapper.ConfigurationProvider)
+            .AsNoTracking().ToListAsync(cancellationToken);
         }
     }
 
