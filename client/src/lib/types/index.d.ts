@@ -24,6 +24,7 @@ type Profile = {
   imageUrl?: string
 }
 
+
 type Photo = {
   id: string
   url: string

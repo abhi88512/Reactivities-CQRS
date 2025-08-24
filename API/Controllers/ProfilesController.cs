@@ -1,6 +1,8 @@
 using System;
+using Application.Activities.DTO;
 using Application.Profiles;
 using Application.Profiles.Commands;
+using Application.Profiles.DTOs;
 using Application.Profiles.Queries;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -32,11 +34,17 @@ public class ProfilesController : BaseApiController
     {
         return HandleResult(await Mediator.Send(new GetProfile.Query { UserId = userId }));
     }
-    
+
     [HttpDelete("{photoId}/photos")]
     public async Task<ActionResult> DeletePhoto(string photoId)
     {
         return HandleResult(await Mediator.Send(new DeletePhoto.Command { PhotoId = photoId }));
+    }
+    
+    [HttpPut]
+    public async Task<ActionResult> EditProfile(EditProfileDto profileDto)
+    {
+        return HandleResult(await Mediator.Send(new EditProfile.Command { ProfileDto = profileDto }));
     }
 
 
