@@ -30,7 +30,7 @@ export const ActivityCard = ({ activity }: Props) => {
     <Card elevation={3} sx={{ borderRadius: 3 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <CardHeader
-          avatar={<Avatar sx={{ height: 80, width: 80 }} />}
+          avatar={<Avatar src={activity.hostImageUrl} sx={{ height: 80, width: 80 }} alt = "Image of the host"/>}
           title={activity.title}
           titleTypographyProps={{
             fontWeight: "bold",
@@ -39,7 +39,7 @@ export const ActivityCard = ({ activity }: Props) => {
           subheader={
             <>
               Hosted by{" "}
-              <Link to={`profiles/${activity.id}`}>
+              <Link to={`/profiles/${activity.hostId}`}>
                 {activity.hostDisplayName}
               </Link>
             </>

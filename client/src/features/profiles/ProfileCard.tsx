@@ -1,5 +1,13 @@
 import { Person } from "@mui/icons-material";
-import { Box, Card, CardContent, CardMedia, Chip, Divider, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Chip,
+  Divider,
+  Typography,
+} from "@mui/material";
 import { Link } from "react-router";
 
 type Props = {
@@ -29,6 +37,19 @@ export const ProfileCard = ({ profile }: Props) => {
         <CardContent>
           <Box display="flex" alignItems="center" gap={1}>
             <Typography variant="h5">{profile.displayName}</Typography>
+            {profile.bio && (
+              <Typography
+                variant="body2"
+                sx={{
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {profile.bio}
+              </Typography>
+            )}
+
             {following && (
               <Chip
                 size="small"
