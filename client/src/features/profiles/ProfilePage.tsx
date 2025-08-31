@@ -13,7 +13,7 @@ export default function ProfilePage() {
   if (!profile) return <Typography>Profile not found</Typography>
 
   return (
-    <Grid2 container>
+    <Grid2 container justifyContent="center" sx={{ mt: 10 }}>
         <Grid2 size={12}>
             <ProfileHeader />
             <ProfileContent />

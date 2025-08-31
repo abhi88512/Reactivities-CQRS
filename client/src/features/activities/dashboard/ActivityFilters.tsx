@@ -7,10 +7,15 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { observer } from "mobx-react-lite";
 import Calendar from "react-calendar";
-import 'react-calendar/dist/Calendar.css';
+import "react-calendar/dist/Calendar.css";
+import { useStore } from "../../../lib/hooks/useStore";
 
-export const ActivityFilters = () => {
+export const ActivityFilters = observer(() => {
+  const {
+    activityStore: { setFilter, setStartDate, filter, startDate },
+  } = useStore();
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", gap: 3, borderRadius: 3 }}
@@ -19,20 +24,34 @@ export const ActivityFilters = () => {
         <Box sx={{ width: "100%" }}>
           <Typography
             variant="h6"
-            sx={{ display: "flex", alignItems: "center", mb: 1 , color:'primary.main'}}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              mb: 1,
+              color: "primary.main",
+            }}
           >
             <FilterList sx={{ mr: 1 }} />
             Filters
           </Typography>
           <MenuList>
-            <MenuItem>
+            <MenuItem
+              selected={filter === "all"}
+              onClick={() => setFilter("all")}
+            >
               <ListItemText primary="All event" />
             </MenuItem>
           </MenuList>
-          <MenuItem>
+          <MenuItem
+            selected={filter === "isGoing"}
+            onClick={() => setFilter("isGoing")}
+          >
             <ListItemText primary="I'm going" />
           </MenuItem>
-          <MenuItem>
+          <MenuItem
+            selected={filter === "isHost"}
+            onClick={() => setFilter("isHost")}
+          >
             <ListItemText primary="I'm hosting" />
           </MenuItem>
         </Box>
@@ -40,13 +59,21 @@ export const ActivityFilters = () => {
       <Box component={Paper} sx={{ width: "100%", p: 3, borderRadius: 3 }}>
         <Typography
           variant="h6"
-          sx={{ display: "flex", alignItems: "center", mb: 1 , color:'primary.main'}}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            mb: 1,
+            color: "primary.main",
+          }}
         >
           <Event sx={{ mr: 1 }} />
           Select Date
         </Typography>
-        <Calendar />
+        <Calendar 
+         value={startDate}
+          onChange={(date) => setStartDate(date as Date)}
+        />
       </Box>
     </Box>
   );
-};
+});

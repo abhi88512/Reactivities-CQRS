@@ -3,6 +3,7 @@ import { useState, type SyntheticEvent } from "react";
 import ProfilePhotos  from "./ProfilePhotos";
 import ProfileAbout from "./ProfileAbout";
 import { ProfileFollowings } from "./ProfileFollowings";
+import { ProfileActivities } from "./ProfileActivities";
 
 export const ProfileContent = () => {
  const [value, setValue] = useState(0);
@@ -14,7 +15,7 @@ export const ProfileContent = () => {
   const tabContent = [
     {label: 'About', content: <ProfileAbout/>},
     {label: 'Photos', content: <ProfilePhotos />},
-    {label: 'Events', content: <div>Events</div>},
+    {label: 'Events', content: <ProfileActivities />},
     {label: 'Followers', content: <ProfileFollowings activeTab={value} />},
     {label: 'Following', content: <ProfileFollowings activeTab={value} />},
   ]
@@ -27,6 +28,7 @@ export const ProfileContent = () => {
       elevation={3}
       height={500}
       sx={{display: 'flex', alignItems: 'flex-start', borderRadius: 3}}
+
     >
       <Tabs
         orientation="vertical"

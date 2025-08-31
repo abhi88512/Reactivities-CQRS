@@ -1,6 +1,6 @@
 using System;
 using Application.Activities.Commands;
-using Application.Activities.Quries;
+using Application.Activities.Queries;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 

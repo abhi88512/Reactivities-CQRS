@@ -1,7 +1,8 @@
 using System;
 using Application.Activities.Commands;
 using Application.Activities.DTO;
-using Application.Activities.Quries;
+using Application.Activities.Queries;
+using Application.Core;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,10 @@ public class ActivitiesController() : BaseApiController
 {
     [HttpGet]
 
-    public async Task<ActionResult<List<GetActivityDetailsDto>>> GetActivities()
+    public async Task<ActionResult<PagedList<GetActivityDetailsDto, DateTime?>>> GetActivities(
+            [FromQuery] ActivityParams activityParams)
     {
-        return await Mediator.Send(new GetActivityList.Query());
-
+        return HandleResult(await Mediator.Send(new GetActivityList.Query { Params = activityParams }));
     }
 
 
@@ -38,7 +39,7 @@ public class ActivitiesController() : BaseApiController
 
     [HttpPut("{id}")]
     [Authorize(Policy = "IsActivityHost")]
-    public async Task<ActionResult> EditActivity(string id ,EditActivityDto activityDto)
+    public async Task<ActionResult> EditActivity(string id, EditActivityDto activityDto)
     {
         activityDto.Id = id;
         return HandleResult(await Mediator.Send(new EditActivity.Command { ActivityDto = activityDto }));
